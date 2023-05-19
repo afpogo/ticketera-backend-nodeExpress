@@ -1,8 +1,8 @@
 const express   = require('express');
 const http      = require('http');
 const socketio  = require('socket.io');
-const path      = require('path');
 const Sockets   = require('./sockets');
+const cors      = require('cors');
 
 class Server {
     constructor() {
@@ -13,23 +13,29 @@ class Server {
         this.server = http.createServer(this.app);
         //Configuraciones de Sockets
         this.io = socketio(this.server, {/* Configurations */});
+        // Inicializamos el servidor de socket
+        this.sockets = new Sockets(this.io);
     }
 
     middlewares() {
         // Este metodo tendra la responsabilidad de inicializar los middlewares de la aplicacion
-        // Desplegar el directorio publico
-        this.app.use('/minichat', express.static(path.resolve(__dirname, '../public')));
-    }
 
-    socketsConfig() {
-        new Sockets(this.io);
+        // Habilitamos la comunicacion entre servidores
+        this.app.use(cors());
+
+        // Definimos las rutas http para la comunicacion con el servidor por medio de la arquitectura Rest
+        this.app.get("/ultimos", (_req, res) => {
+            res.json({
+                ok: true,
+                data: this.sockets.ticketList.lastPackTickets,
+            });
+        })
     }
 
     execute() {
         // Inicializar Middlewares
         this.middlewares();
 
-        this.socketsConfig();
         // Este metodo va a tener la responsabilidad unica de ejecutar la aplicacion
         this.server.listen(this.port, () => {
             console.log(`Conectado, Server Running on ${this.port}`);

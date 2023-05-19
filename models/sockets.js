@@ -1,4 +1,4 @@
-const Ticket = require("./Ticket");
+// const Ticket = require("./Ticket");
 const TicketList = require("./TicketList");
 class Sockets {
   constructor(io) {
@@ -14,7 +14,7 @@ class Sockets {
     //   console.log("Cliente Conectado");
       socket.on("CreateNewTicket", (payload, cb) => {
         const { autenticacion } = payload;
-        console.log(`message: ${autenticacion}`);
+        // console.log(`message: ${autenticacion}`);
         //Antes creamos la instancia del ticketList, ahora obtenemos un nuevo ticket
         const nuevoTicket = this.ticketList.createTicket();
         // console.log(nuevoTicket);
@@ -24,7 +24,6 @@ class Sockets {
 
       socket.on("ticketAssign", ({agente, escritorio}, cb) =>{
         const currentTicket = this.ticketList.asignarTicket(agente, escritorio);
-        // console.log(currentTicket);
         if(currentTicket !== null) cb(currentTicket);
 
         // Notificamos que asignamos un nuevo ticket a la cola

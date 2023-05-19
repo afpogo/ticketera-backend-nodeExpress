@@ -14,15 +14,17 @@ class TicketList {
 
   obtenerUltimosElementos = (array, cantidad) => {
     // Verificar si la cantidad solicitada es mayor que la longitud del array
+    // console.log([...array]);
     const cantidadElementos = Math.min(cantidad, array.length);
     // Obtener los últimos elementos del array
-    const ultimosElementos = array.slice(1, cantidadElementos);
+    const ultimosElementos = array.slice(0, cantidadElementos);
     return ultimosElementos;
   };
 
   // Aca tenemos que traer y mostrar los 3 que se veran en las tarjetas y 10 elementos que van a ir en el historial
   get lastPackTickets() {
     const ultimos13 = this.obtenerUltimosElementos(this.ticketsAsignados, 13);
+    // console.log(this.obtenerUltimosElementos(this.ticketsAsignados, 13));
     return ultimos13;
   }
 
@@ -41,7 +43,7 @@ class TicketList {
     siguienteTicketAsignado.agente = agente;
     siguienteTicketAsignado.escritorio = escritorio;
     this.ticketsAsignados.unshift(siguienteTicketAsignado);
-    console.log({siguienteTicketAsignado});
+    // console.log({siguienteTicketAsignado});
     return siguienteTicketAsignado;
   }
 
